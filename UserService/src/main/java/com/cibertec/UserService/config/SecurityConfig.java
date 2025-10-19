@@ -40,7 +40,9 @@ public class SecurityConfig {
                     "/oauth2/**",
                     "/favicon.ico",
                     "/webjars/**",
-                    "/h2-console/**"
+                    "/h2-console/**",
+                    "/api/users/{id}",
+                    "/api/users/all"
                 ).permitAll()
                 .anyRequest().authenticated()
             )

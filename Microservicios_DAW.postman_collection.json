@@ -1,0 +1,466 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Microservicios DAW - Spring Boot",
+		"description": "Colección completa para probar microservicios con Spring Cloud, OAuth2, JWT y Resilience4J",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Eureka Server",
+			"item": [
+				{
+					"name": "Dashboard Eureka",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8761",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761"
+						},
+						"description": "Ver el dashboard de Eureka para verificar que los microservicios estén registrados"
+					},
+					"response": []
+				},
+				{
+					"name": "API Eureka - Instancias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps"
+							]
+						},
+						"description": "Obtener información de todas las instancias registradas en Eureka"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para verificar el estado del servidor de descubrimiento Eureka"
+		},
+		{
+			"name": "2. Config Server",
+			"item": [
+				{
+					"name": "Configuración UserService",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/user-service/default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"user-service",
+								"default"
+							]
+						},
+						"description": "Obtener la configuración del UserService desde el Config Server"
+					},
+					"response": []
+				},
+				{
+					"name": "Configuración ProductService",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/product-service/default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"product-service",
+								"default"
+							]
+						},
+						"description": "Obtener la configuración del ProductService desde el Config Server"
+					},
+					"response": []
+				},
+				{
+					"name": "Configuración General",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/application/default",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"application",
+								"default"
+							]
+						},
+						"description": "Obtener la configuración general de la aplicación"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para verificar la configuración centralizada"
+		},
+		{
+			"name": "3. UserService - OAuth2 + JWT",
+			"item": [
+				{
+					"name": "Login con Google OAuth2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/oauth2/authorization/google",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"oauth2",
+								"authorization",
+								"google"
+							]
+						},
+						"description": "Iniciar el flujo de autenticación con Google OAuth2. Esto redirigirá al navegador para autenticarse con Google."
+					},
+					"response": []
+				},
+				{
+					"name": "Login Success (Callback)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/auth/login-success",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"auth",
+								"login-success"
+							]
+						},
+						"description": "Endpoint de callback después del login exitoso con Google. Retorna el JWT token."
+					},
+					"response": []
+				},
+				{
+					"name": "Perfil de Usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/api/users/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						},
+						"description": "Obtener el perfil del usuario autenticado. Requiere JWT token en el header Authorization."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Usuario por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						},
+						"description": "Obtener información de un usuario específico por su ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos los Usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/api/users/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"all"
+							]
+						},
+						"description": "Obtener la lista de todos los usuarios registrados"
+					},
+					"response": []
+				},
+				{
+					"name": "Generar Token JWT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/api/users/generate-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"users",
+								"generate-token"
+							]
+						},
+						"description": "Generar un nuevo token JWT para el usuario autenticado"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints del UserService con autenticación OAuth2 y JWT"
+		},
+		{
+			"name": "4. ProductService - Resilience4J",
+			"item": [
+				{
+					"name": "Listar Productos (Normal)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "Obtener la lista de productos. Este endpoint tiene Circuit Breaker, Retry y Timeout configurados con Resilience4J."
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Productos (Prueba Circuit Breaker)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "Ejecutar múltiples veces para probar el Circuit Breaker. Después de 3 fallos, el Circuit Breaker se abrirá y mostrará productos de fallback."
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Productos (Prueba Timeout)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"api",
+								"products"
+							]
+						},
+						"description": "Ejecutar para probar el Timeout. Cada 4ta ejecución simula un retraso de 3 segundos que activará el fallback por timeout."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints del ProductService con Resilience4J (Circuit Breaker, Retry, Timeout)"
+		},
+		{
+			"name": "5. Pruebas de Integración",
+			"item": [
+				{
+					"name": "Flujo Completo - Login y Productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/oauth2/authorization/google",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"oauth2",
+								"authorization",
+								"google"
+							]
+						},
+						"description": "1. Ejecutar este endpoint para iniciar login con Google\n2. Después de autenticarse, ejecutar 'Login Success' para obtener JWT\n3. Actualizar la variable jwt_token\n4. Ejecutar 'Perfil de Usuario' con el token\n5. Ejecutar 'Listar Productos' para ver Resilience4J en acción"
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar Estado de Servicios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8761/eureka/apps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8761",
+							"path": [
+								"eureka",
+								"apps"
+							]
+						},
+						"description": "Verificar que todos los microservicios estén registrados en Eureka"
+					},
+					"response": []
+				}
+			],
+			"description": "Pruebas de integración completa del sistema"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Script para manejar automáticamente el JWT token",
+					"if (pm.response && pm.response.json() && pm.response.json().token) {",
+					"    pm.collectionVariables.set('jwt_token', pm.response.json().token);",
+					"    console.log('JWT Token actualizado automáticamente');",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Tests automáticos para verificar respuestas",
+					"pm.test('Status code is 200', function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"// Test específico para login success",
+					"if (pm.request.url.path.includes('login-success')) {",
+					"    pm.test('Response contains token', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData).to.have.property('token');",
+					"    });",
+					"}",
+					"",
+					"// Test específico para productos",
+					"if (pm.request.url.path.includes('products')) {",
+					"    pm.test('Response is an array', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData).to.be.an('array');",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string",
+			"description": "Token JWT obtenido después del login con Google OAuth2"
+		},
+		{
+			"key": "base_url_user",
+			"value": "http://localhost:8081",
+			"type": "string",
+			"description": "URL base del UserService"
+		},
+		{
+			"key": "base_url_product",
+			"value": "http://localhost:8082",
+			"type": "string",
+			"description": "URL base del ProductService"
+		},
+		{
+			"key": "base_url_eureka",
+			"value": "http://localhost:8761",
+			"type": "string",
+			"description": "URL base del Eureka Server"
+		},
+		{
+			"key": "base_url_config",
+			"value": "http://localhost:8888",
+			"type": "string",
+			"description": "URL base del Config Server"
+		}
+	]
+}
