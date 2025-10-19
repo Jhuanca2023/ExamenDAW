@@ -30,15 +30,14 @@ public class ProductService {
     public CompletableFuture<List<Product>> getAllProducts() {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                // Simular un retraso aleatorio para probar el Circuit Breaker
+              
                 if (random.nextBoolean()) {
-                    // Simular un error aleatorio
+                   
                     throw new RuntimeException("Error al obtener productos");
                 }
 
-                // Simular un retraso mayor al configurado para probar el Timeout
                 if (attempt++ % 4 == 0) {
-                    TimeUnit.SECONDS.sleep(3); // 3 segundos de retraso
+                    TimeUnit.SECONDS.sleep(3); 
                 }
 
                 return productRepository.findAll();
@@ -49,11 +48,11 @@ public class ProductService {
         });
     }
 
-    // Método de fallback para Circuit Breaker y Retry
+   
     public List<Product> getAllProductsFallback(Exception e) {
         System.out.println("Fallback ejecutado debido a: " + e.getMessage());
         
-        // Crear productos de ejemplo para el fallback
+        
         Product fallbackProduct1 = new Product(
             "Producto de ejemplo 1",
             "Este es un producto de ejemplo que se muestra cuando hay un error en el servicio",
@@ -71,7 +70,7 @@ public class ProductService {
         return List.of(fallbackProduct1, fallbackProduct2);
     }
 
-    // Método de fallback para Timeout
+    
     public CompletableFuture<List<Product>> getAllProductsTimeoutFallback(Exception e) {
         System.out.println("Timeout fallback ejecutado debido a: " + e.getMessage());
         
