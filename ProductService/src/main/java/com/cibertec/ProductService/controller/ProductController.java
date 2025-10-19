@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/products")
@@ -16,22 +17,12 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        try {
-            List<Product> products = productService.getAllProducts();
-            return ResponseEntity.ok(products);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        try {
-            Product createdProduct = productService.createProduct(product);
-            return ResponseEntity.ok(createdProduct);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public CompletableFuture<ResponseEntity<List<Product>>> getAllProducts() {
+        return productService.getAllProducts()
+                .thenApply(ResponseEntity::ok)
+                .exceptionally(throwable -> {
+                    System.err.println("Error al obtener productos: " + throwable.getMessage());
+                    return ResponseEntity.internalServerError().build();
+                });
     }
 }
