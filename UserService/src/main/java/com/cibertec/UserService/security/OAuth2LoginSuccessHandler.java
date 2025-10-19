@@ -27,18 +27,31 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                       Authentication authentication) throws IOException, ServletException {
         
-        DefaultOAuth2User oauthUser = (DefaultOAuth2User) authentication.getPrincipal();
-        String email = oauthUser.getAttribute("email");
+        // Obtener el principal correctamente
+        Object principal = authentication.getPrincipal();
+        String email = null;
         
-        Optional<User> userOpt = userRepository.findByEmail(email);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            // Usar el email del usuario para generar el token
-            String token = tokenProvider.generateToken(user.getEmail());
-            
-            // Redirigir al frontend con el token
-            String redirectUrl = String.format("http://localhost:3000/oauth2/redirect?token=%s", token);
-            getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+        if (principal instanceof DefaultOAuth2User) {
+            DefaultOAuth2User oauthUser = (DefaultOAuth2User) principal;
+            email = oauthUser.getAttribute("email");
+        } else if (principal instanceof UserPrincipal) {
+            UserPrincipal userPrincipal = (UserPrincipal) principal;
+            email = userPrincipal.getEmail();
+        }
+        
+        if (email != null) {
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+               
+                String token = tokenProvider.generateToken(user.getEmail());
+                
+                // Redirigir al endpoint de login success con el token
+                String redirectUrl = String.format("http://localhost:8081/api/auth/login-success?token=%s", token);
+                getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+            } else {
+                super.onAuthenticationSuccess(request, response, authentication);
+            }
         } else {
             super.onAuthenticationSuccess(request, response, authentication);
         }

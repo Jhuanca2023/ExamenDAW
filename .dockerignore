@@ -1,0 +1,36 @@
+# Archivos de Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Archivos de IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Git
+.git/
+.gitignore
+
+# Archivos de Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Archivos de documentación
+README.md
+*.md
+
+# Archivos de scripts
+*.bat
+*.sh
+
+# Archivos de configuración local
+application-local.properties
+application-dev.properties

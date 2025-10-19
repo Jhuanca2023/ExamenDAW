@@ -14,15 +14,19 @@ import java.util.Map;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
     private Long id;
+    private String name;
     private String email;
+    private String imageUrl;
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
-    public UserPrincipal(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, String name, String email, String imageUrl, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
+        this.name = name;
         this.email = email;
+        this.imageUrl = imageUrl;
         this.password = password;
         this.authorities = authorities;
     }
@@ -33,7 +37,9 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
         return new UserPrincipal(
                 user.getId(),
+                user.getName(),
                 user.getEmail(),
+                user.getImageUrl(),
                 user.getPassword(),
                 authorities
         );
@@ -51,6 +57,10 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     @Override
@@ -99,6 +109,6 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     @Override
     public String getName() {
-        return String.valueOf(id);
+        return name != null ? name : email;
     }
 }
